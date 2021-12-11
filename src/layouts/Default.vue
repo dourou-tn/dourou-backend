@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar app dark>
       <v-spacer></v-spacer>
-      <v-toolbar-title>DOUROU Backend</v-toolbar-title>
+      <v-toolbar-title>DOUROU</v-toolbar-title>
       <v-spacer></v-spacer>
     </v-app-bar>
 

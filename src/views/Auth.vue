@@ -78,7 +78,7 @@ export default {
       if (!this.valid) return
       const credentials = { email: this.user.email, password: this.user.password };
       const res = await this.$store.dispatch('auth/login', credentials);
-      if (res) {
+      if (res === 200) {
         this.$router.push({ name: 'HomePage' })
       }
     }
