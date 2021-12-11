@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <Drawer />
-    <v-app-bar app dark>
+    <v-app-bar app dark color="primary">
       <v-spacer></v-spacer>
       <v-toolbar-title>DOUROU Backend</v-toolbar-title>
       <v-spacer></v-spacer>

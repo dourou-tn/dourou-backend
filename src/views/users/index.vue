@@ -1,0 +1,150 @@
+<template>
+  <div>
+    <v-data-table
+      :headers="headers"
+      :items="users"
+      sort-by="id"
+      class="elevation-0"
+    >
+      <template v-slot:top>
+        <v-toolbar
+          flat
+        >
+          <v-toolbar-title>
+            <v-icon class="mb-1">mdi-account-multiple</v-icon>
+            Liste des Utilisateurs
+          </v-toolbar-title>
+          <v-divider
+            class="mx-4"
+            inset
+            vertical
+          ></v-divider>
+          <v-spacer></v-spacer>
+
+          <v-dialog
+            v-model="createUserForm"
+            fullscreen
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                color="primary"
+                dark
+                class="mb-2"
+                v-bind="attrs"
+                v-on="on"
+              >
+                Ajouter
+              </v-btn>
+            </template>
+            <UsersForm @modal:close="closeUserForm" />
+          </v-dialog>
+
+        </v-toolbar>
+      </template>
+
+      <template v-slot:item.name="{item}">
+        <span>{{ item.lastname }} {{ item.firstname }}</span>
+      </template>
+
+      <template v-slot:item.role_id="{item}">
+        <v-chip small :color="item.role_id === 1 ? 'primary' : 'secondary' ">
+          {{ item.role_id === 1 ? 'Admin' : 'User' }}
+        </v-chip>
+      </template>
+
+      <template v-slot:item.actions="item">
+        <v-icon
+          small
+          class="mr-2"
+          @click="editUser(item)"
+        >
+          mdi-pencil
+        </v-icon>
+        <v-icon
+          small
+          @click="deleteUser(item)"
+        >
+          mdi-delete
+        </v-icon>
+      </template>
+
+    </v-data-table>
+  </div>
+</template>
+
+<script>
+import UsersForm from './userForm.vue';
+
+export default {
+  name: 'UsersPage',
+  components: { UsersForm },
+  data() {
+    return {
+      headers: [
+        {
+          text: 'ID',
+          align: 'left',
+          sortable: true,
+          value: 'id'
+        },
+        {
+          text: 'Nom & Prénom',
+          align: 'left',
+          value: 'name',
+        },
+        {
+          text: 'Username',
+          align: 'left',
+          sortable: true,
+          value: 'username'
+        },
+        {
+          text: 'Prénom',
+          align: 'left',
+          sortable: true,
+          value: 'lastname'
+        },
+        {
+          text: 'Email',
+          align: 'left',
+          sortable: true,
+          value: 'email'
+        },
+        {
+          text: 'Role',
+          align: 'left',
+          sortable: true,
+          value: 'role_id'
+        },
+        {
+          text: 'Actions',
+          value: 'actions',
+          sortable: false
+        }
+      ],
+      createUserForm: false,
+    }
+  },
+  async mounted() {
+    await this.$store.dispatch('users/fetchUsers');
+  },
+
+  computed: {
+    users () {
+      return this.$store.getters['users/users'];
+    }
+  },
+
+  methods: {
+    editUser (user) {
+      console.log('user edit', user)
+    },
+    deleteUser (user) {
+      console.log('user delete', user)
+    },
+    closeUserForm () {
+      this.createUserForm = false;
+    },
+  }
+}
+</script>

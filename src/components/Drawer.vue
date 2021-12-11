@@ -6,21 +6,6 @@
       expand-on-hover
     >
       <v-list>
-        <v-list-item class="px-2">
-          <v-avatar
-            color="primary"
-            size="32"
-          >
-            <span class="white--text">
-              {{ currentUser.firstname[0]}}
-              {{ currentUser.lastname[0]}}
-            </span>
-          </v-avatar>
-          <!-- <v-list-item-avatar>
-            <v-img src="https://randomuser.me/api/portraits/women/85.jpg"></v-img>
-          </v-list-item-avatar> -->
-        </v-list-item>
-
         <v-list-item link>
           <v-list-item-content>
             <v-list-item-title class="text-h6">

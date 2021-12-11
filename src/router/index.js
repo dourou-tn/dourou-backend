@@ -27,7 +27,7 @@ const routes = [
   {
     path: '/users',
     name: 'UsersPage',
-    component: () => import(/* webpackChunkName: "users" */ '../views/Users.vue'),
+    component: () => import(/* webpackChunkName: "users" */ '../views/users/index.vue'),
     meta: {
       auth: true,
       layout: 'backend-layout',
