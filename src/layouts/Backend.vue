@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Drawer :value="drawer" />
+    <Drawer />
     <v-app-bar app dark>
       <v-spacer></v-spacer>
       <v-toolbar-title>DOUROU Backend</v-toolbar-title>
@@ -32,27 +32,6 @@
               >
                 {{ currentUser.email }}
               </v-btn>
-            </v-list-item-title>
-          </v-list-item>
-
-          <v-list-item
-            @click="$router.push({ name: 'user-profile', params: { id: currentUser.id } })"
-          >
-            <v-list-item-icon>
-              <v-icon v-text="'mdi-account'" />
-            </v-list-item-icon>
-            <v-list-item-title>Profil</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item
-            disabled
-            @click="() => {}"
-          >
-            <v-list-item-icon>
-              <v-icon v-text="'mdi-chart-bar'"/>
-            </v-list-item-icon>
-            <v-list-item-title disabled>
-                Mes Rapports
             </v-list-item-title>
           </v-list-item>
 
@@ -95,7 +74,7 @@
 import Drawer from '../components/Drawer.vue'
 
 export default {
-  name: 'DefaultComponent',
+  name: 'BackendLayout',
   components: { Drawer },
   computed: {
     currentUser () {

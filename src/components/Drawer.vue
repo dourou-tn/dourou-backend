@@ -40,12 +40,14 @@
         <v-list-item
           v-for="(link, index) in links"
           :key="index"
+          :to="{ name: link.to }"
           link
+          exact
         >
           <v-list-item-icon>
             <v-icon>{{ link.icon }}</v-icon>
           </v-list-item-icon>
-          <v-list-item-title :to="{ name: link.to }">{{ link.text }}</v-list-item-title>
+          <v-list-item-title>{{ link.text }}</v-list-item-title>
         </v-list-item>
        
       </v-list>

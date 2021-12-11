@@ -28,7 +28,7 @@
 
 <script>
 export default {
-  name: 'DefaultComponent',
+  name: 'DefaultLayout',
   mounted () {
   }
 }

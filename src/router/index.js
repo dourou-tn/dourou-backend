@@ -23,6 +23,33 @@ const routes = [
       guest: true,
       layout: 'default-layout',
     },
+  },
+  {
+    path: '/users',
+    name: 'UsersPage',
+    component: () => import(/* webpackChunkName: "users" */ '../views/Users.vue'),
+    meta: {
+      auth: true,
+      layout: 'backend-layout',
+    },
+  },
+  {
+    path: '/products',
+    name: 'ProductsPage',
+    component: () => import(/* webpackChunkName: "products" */ '../views/Products.vue'),
+    meta: {
+      auth: true,
+      layout: 'backend-layout',
+    },
+  },
+  {
+    path: '/auctions',
+    name: 'AuctionsPage',
+    component: () => import(/* webpackChunkName: "users" */ '../views/Auctions.vue'),
+    meta: {
+      auth: true,
+      layout: 'backend-layout',
+    },
   }
 ]
 
