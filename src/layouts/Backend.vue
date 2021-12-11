@@ -1,13 +1,10 @@
 <template>
   <v-app>
+    <Drawer :value="drawer" />
     <v-app-bar app dark>
       <v-spacer></v-spacer>
       <v-toolbar-title>DOUROU Backend</v-toolbar-title>
       <v-spacer></v-spacer>
-
-      <v-btn icon >
-        <v-icon v-text="$vuetify.theme.dark ? 'mdi-brightness-7' : 'mdi-brightness-2'" />
-      </v-btn>
 
       <v-menu
         right
@@ -95,10 +92,11 @@
 </template>
 
 <script>
+import Drawer from '../components/Drawer.vue'
+
 export default {
   name: 'DefaultComponent',
-  mounted () {
-  },
+  components: { Drawer },
   computed: {
     currentUser () {
       return this.$store.getters['auth/getUser'];
