@@ -30,7 +30,14 @@ export default {
       if (res.status === 200) {
         commit('ADD_USER', res.data)
       }
-      return res.state;
+      return res.status;
+    },
+
+    async edit (_, user) {
+      if (user.id) {
+        const res = await window.Axios.put(`/users/${user.id}`, user);
+        return res.status;
+      }
     }
   }
 }

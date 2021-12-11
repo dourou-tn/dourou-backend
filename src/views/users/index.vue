@@ -36,7 +36,9 @@
                 Ajouter
               </v-btn>
             </template>
-            <UsersForm @modal:close="closeUserForm" />
+
+            <UsersForm v-if="createUserForm" @modal:close="closeUserForm" :edit="edit" />
+
           </v-dialog>
 
         </v-toolbar>
@@ -52,7 +54,7 @@
         </v-chip>
       </template>
 
-      <template v-slot:item.actions="item">
+      <template v-slot:item.actions="{ item }">
         <v-icon
           small
           class="mr-2"
@@ -123,6 +125,7 @@ export default {
         }
       ],
       createUserForm: false,
+      edit: null
     }
   },
   async mounted() {
@@ -137,12 +140,14 @@ export default {
 
   methods: {
     editUser (user) {
-      console.log('user edit', user)
+      this.edit = user;
+      this.createUserForm = true;
     },
     deleteUser (user) {
       console.log('user delete', user)
     },
     closeUserForm () {
+      this.edit = null;
       this.createUserForm = false;
     },
   }

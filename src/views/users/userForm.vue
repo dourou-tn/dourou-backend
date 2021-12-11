@@ -64,7 +64,7 @@
                 v-model="user.password"
                 label="Mot de passe"
                 type="password"
-                :rules="rules.password"
+                :rules="edit ? [] : rules.password"
               />
             </v-col>
             <v-col cols="12" sm="6" md="6">
@@ -72,7 +72,7 @@
                 v-model="user.password_confirmation"
                 label="Confirmation du mot de passe"
                 type="password"
-                :rules="rules.password_confirmation"
+                :rules="edit ? [] : rules.password_confirmation"
               />
             </v-col>
           </v-row>
@@ -127,6 +127,17 @@
 <script>
 export default {
   name: 'UsersForm',
+  props: {
+    edit: {
+      type: Object,
+      default: () => {}
+    },
+  },
+  mounted() {
+    if (this.edit && this.edit.id) {
+      this.user = this.edit
+    }
+  },
   data () {
     return {
       valid: false,
@@ -144,7 +155,7 @@ export default {
       rules: {
         required: [v => !!v || 'Ce champ est requis'],
         email: [value => /.+@.+\..+/.test(value) || 'Veuillez entrer une adresse email valide'],
-        password: [value => value.length >= 8 || 'Le mot de passe doit contenir au moins 8 caractères'],
+        password: [value => (value && value.length >= 8) || 'Le mot de passe doit contenir au moins 8 caractères'],
         password_confirmation: [value => !!value || value === this.user.password || 'Les mots de passe ne correspondent pas']
       },
     }
@@ -170,8 +181,10 @@ export default {
       this.loading = true
       if (!this.$refs.form.validate()) return
 
+      const action = this.edit ? 'edit' : 'create'
+
       try {
-        await this.$store.dispatch('users/create', this.user)
+        await this.$store.dispatch(`users/${action}`, this.user)
         this.closeModal()
       } catch (e) {
         console.log(e)
