@@ -1,5 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
+
+const persistedStateOptions = {
+  paths: [
+    'auth',
+  ]
+}
 
 import auth from './auth'
 
@@ -9,4 +16,6 @@ export default new Vuex.Store({
   modules: {
     auth
   },
+  plugins: [createPersistedState(persistedStateOptions)]
 })
+

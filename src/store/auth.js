@@ -22,12 +22,11 @@ export default {
       state.isLogged = true
     },
 
-    // LOGOUT_USER(state) {
-    //   state.authenticated = false
-    //   state.token_type = null
-    //   state.token = null
-    //   state.user = null
-    // },
+    LOGOUT_USER(state) {
+      state.token = null
+      state.user = {}
+      state.isLogged = false
+    },
 
     // ME(state, user) {
     //   state.user = user
@@ -44,18 +43,10 @@ export default {
       }
     },
 
-    // async logout({ commit, rootGetters }) {
-    //   try {
-    //     const user = rootGetters['auth/getUser']
-    //     const res = await Axios.post('/api/logout', user)
-    //     if (res) {
-    //       commit('LOGOUT_USER')
-    //       return res
-    //     }
-    //   } catch (err) {
-    //     throw new Error(err)
-    //   }
-    // },
+    async logout({ commit }) {
+      commit('LOGOUT_USER')
+      return true
+    },
 
     // async me({ commit }) {
     //   try {
