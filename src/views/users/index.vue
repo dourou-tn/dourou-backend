@@ -79,6 +79,12 @@
         </v-toolbar>
       </template>
 
+      <template v-slot:item.avatar="{item}">
+        <v-avatar v-if="item.image_url" size="32">
+          <img :src="`http://localhost:5000/${item.image_url}`" />
+        </v-avatar>
+      </template>
+
       <template v-slot:item.name="{item}">
         <span>{{ item.lastname }} {{ item.firstname }}</span>
       </template>
@@ -122,7 +128,15 @@ export default {
           text: 'ID',
           align: 'left',
           sortable: true,
-          value: 'id'
+          value: 'id',
+          width: 32,
+        },
+        {
+          text: '',
+          align: 'shrink',
+          sortable: false,
+          value: 'avatar',
+          width: 32,
         },
         {
           text: 'Nom & Prénom',
