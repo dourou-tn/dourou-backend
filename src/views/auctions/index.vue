@@ -1,117 +1,116 @@
 <template>
-  <div>
-    <v-data-table
-      :headers="headers"
-      :items="auctions"
-      sort-by="id"
-      class="elevation-0"
-      :loading="loading"
-    >
-      <template v-slot:top>
-        <v-toolbar
-          flat
-        >
-          <v-toolbar-title>
-            <v-icon class="mb-1">mdi-creation</v-icon>
-            Liste des Enchères
-          </v-toolbar-title>
-          <v-divider
-            class="mx-4"
-            inset
-            vertical
-          ></v-divider>
-          <v-spacer></v-spacer>
+  <v-data-table
+    :headers="headers"
+    :items="auctions"
+    sort-by="id"
+    class="elevation-0 rounded-tl-xl"
+    :loading="loading"
+  >
+    <template v-slot:top>
+      <v-toolbar
+        flat
+        class="rounded-tl-xl"
+      >
+        <v-toolbar-title>
+          <v-icon class="mb-1">mdi-creation</v-icon>
+          Enchères
+        </v-toolbar-title>
+        <v-divider
+          class="mx-4"
+          inset
+          vertical
+        ></v-divider>
+        <v-spacer></v-spacer>
 
-          <v-dialog
-            v-model="createForm"
-            fullscreen
-          >
-            <template v-slot:activator="{ on, attrs }">
+        <v-dialog
+          v-model="createForm"
+          fullscreen
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              dark
+              class="mb-2"
+              v-bind="attrs"
+              v-on="on"
+            >
+              Ajouter
+            </v-btn>
+          </template>
+
+          <AuctionForm v-if="createForm" @modal:close="closeForm" :edit="edit" />
+
+        </v-dialog>
+
+        <v-dialog
+          v-if="auctionToDelete"
+          v-model="auctionToDelete"
+          persistent
+          max-width="393"
+        >
+          <v-card>
+            <v-card-title class="text-h5">
+              Supprimer?
+            </v-card-title>
+            <v-card-text>
+              <div>{{ auctionToDelete.name }}</div>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
               <v-btn
-                color="primary"
-                dark
-                class="mb-2"
-                v-bind="attrs"
-                v-on="on"
+                color="red darken-1"
+                text
+                @click="auctionToDelete = null"
               >
-                Ajouter
+                Annuler
               </v-btn>
-            </template>
+              <v-btn
+                color="green darken-1"
+                text
+                @click="confirmDelete"
+              >
+                Confirmer
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
 
-            <AuctionForm v-if="createForm" @modal:close="closeForm" :edit="edit" />
+      </v-toolbar>
+    </template>
 
-          </v-dialog>
+    <!-- <template v-slot:item.avatar="{item}">
+      <v-avatar v-if="item.image_url" size="32">
+        <img :src="`http://localhost:5000/${item.image_url}`" />
+      </v-avatar>
+    </template> -->
 
-          <v-dialog
-            v-if="auctionToDelete"
-            v-model="auctionToDelete"
-            persistent
-            max-width="393"
-          >
-            <v-card>
-              <v-card-title class="text-h5">
-                Supprimer?
-              </v-card-title>
-              <v-card-text>
-                <div>{{ auctionToDelete.name }}</div>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                  color="red darken-1"
-                  text
-                  @click="auctionToDelete = null"
-                >
-                  Annuler
-                </v-btn>
-                <v-btn
-                  color="green darken-1"
-                  text
-                  @click="confirmDelete"
-                >
-                  Confirmer
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+    <!-- <template v-slot:item.name="{item}">
+      <span>{{ item.lastname }} {{ item.firstname }}</span>
+    </template>
 
-        </v-toolbar>
-      </template>
+    <template v-slot:item.role_id="{item}">
+      <v-chip small :color="item.role_id === 1 ? 'primary' : 'secondary' ">
+        {{ item.role_id === 1 ? 'Admin' : 'User' }}
+      </v-chip>
+    </template> -->
 
-      <!-- <template v-slot:item.avatar="{item}">
-        <v-avatar v-if="item.image_url" size="32">
-          <img :src="`http://localhost:5000/${item.image_url}`" />
-        </v-avatar>
-      </template> -->
+    <!-- <template v-slot:item.actions="{ item }">
+      <v-icon
+        small
+        class="mr-2"
+        @click="editUser(item)"
+      >
+        mdi-pencil
+      </v-icon>
+      <v-icon
+        small
+        @click="deleteUser(item)"
+      >
+        mdi-delete
+      </v-icon>
+    </template> -->
 
-      <!-- <template v-slot:item.name="{item}">
-        <span>{{ item.lastname }} {{ item.firstname }}</span>
-      </template>
-
-      <template v-slot:item.role_id="{item}">
-        <v-chip small :color="item.role_id === 1 ? 'primary' : 'secondary' ">
-          {{ item.role_id === 1 ? 'Admin' : 'User' }}
-        </v-chip>
-      </template> -->
-
-      <!-- <template v-slot:item.actions="{ item }">
-        <v-icon
-          small
-          class="mr-2"
-          @click="editUser(item)"
-        >
-          mdi-pencil
-        </v-icon>
-        <v-icon
-          small
-          @click="deleteUser(item)"
-        >
-          mdi-delete
-        </v-icon>
-      </template> -->
-
-    </v-data-table>
-  </div>
+  </v-data-table>
 </template>
 
 <script>

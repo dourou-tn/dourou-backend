@@ -35,3 +35,11 @@
     },
   }
 </script>
+<style>
+  .ql-toolbar.ql-snow {
+    background-color: wheat !important;
+  }
+  .ql-editor.ql-blank::before {
+    color: wheat !important;
+  }
+</style>

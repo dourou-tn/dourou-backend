@@ -24,94 +24,92 @@
         <v-container>
 
           <v-row>
-            <v-col cols="12" sm="6" md="6">
+            <v-col cols="12">
               <v-text-field
                 v-model="product.name"
                 label="Nom du produit"
-                :rules="rules.required"
-                validate-on-blur
-              />
-            </v-col>
-            <v-col cols="12" sm="6" md="6">
-              <v-textarea
-                v-model="product.seo_description"
-                label="SEO Description"
-                :rules="rules.required"
+                :rules="[rules.required]"
                 validate-on-blur
               />
             </v-col>
           </v-row>
-          <!-- 
+          
           <v-row>
-            <v-col cols="12" sm="6" md="6">
+            <v-col cols="12" md="6" sm="12">
               <v-text-field
-                v-model="user.username"
-                label="Username"
-                type="text"
-                :rules="rules.required"
+                v-model="slug"
+                label="Slug"
+                :rules="[rules.required]"
+                validate-on-blur
+                readonly
               />
             </v-col>
-            <v-col cols="12" sm="6" md="6">
-              
+            <v-col cols="12" md="6" sm="12">
               <v-text-field
-                v-model="user.email"
-                label="Email"
-                type="email"
-                :rules="rules.email"
+                type="number"
+                v-model="product.price"
+                label="Prix du produit"
+                :rules="[rules.required]"
+                validate-on-blur
+                prefix="TND"
               />
             </v-col>
           </v-row>
-  
           <v-row>
-            <v-col cols="12" sm="6" md="6">
-              <v-text-field
-                v-model="user.password"
-                label="Mot de passe"
-                type="password"
-                :rules="edit ? [] : rules.password"
+            <v-col cols="12" sm="12" md="6" v-if="edit" class="d-flex flex-column">
+              <v-btn
+                text
+                color="white"
+                small
+                @click="toggleUpdateImage"
+              >
+                {{ updateImage ? `Reprendre l'original` : 'Modifier image' }}
+              </v-btn>
+              <v-img
+                v-if="!updateImage"
+                :src="`http://localhost:5000/${product.image_path}`"
+                aspect-ratio="1"
+                max-width="350"
               />
-            </v-col>
-            <v-col cols="12" sm="6" md="6">
-              <v-text-field
-                v-model="user.password_confirmation"
-                label="Confirmation du mot de passe"
-                type="password"
-                :rules="edit ? [] : rules.password_confirmation"
-              />
-            </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col cols="12" sm="6" md="6">
-              <v-text-field
-                v-model="user.phone"
-                label="Téléphone"
-                :rules="rules.required"
-              />
-            </v-col>
-            <v-col cols="12" sm="6" md="6">
-              <v-select
-                :items="[
-                  { value: 1, text: 'Administrateur' },
-                  { value: 2, text: 'Utilisateur' }
-                ]"
-                label="Role"
-                v-model="user.role_id"
-                :rules="rules.required"
-              ></v-select>
-            </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col cols="12" sm="12" md="12">
               <v-image-input
-                v-model="user.image"
+                v-else
+                v-model="product.image"
                 :image-quality="1"
                 clearable
                 image-format="png"
               />
             </v-col>
-          </v-row> -->
+            <v-col cols="12" sm="12" md="6" v-else>
+              <v-image-input
+                v-model="product.image"
+                :image-quality="1"
+                clearable
+                image-format="png"
+              />
+            </v-col>
+            <v-col cols="12" sm="12" md="6">
+              <v-row>
+                <v-col cols="12">
+                  <v-select
+                    v-model="product.price"
+                    label="Vendeur"
+                    :rules="[rules.required]"
+                    validate-on-blur
+                  />
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col cols="12" sm="12" md="12">
+              <Editor
+                v-model="product.description"
+              />
+            </v-col>
+          </v-row>
+     
+          
         </v-container>
 
       </v-form>
@@ -139,13 +137,15 @@
 </template>
 
 <script>
-// import VImageInput from 'vuetify-image-input/a-la-carte';
+import Editor from '@/components/Editor.vue';
+import VImageInput from 'vuetify-image-input/a-la-carte';
 
 export default {
   name: 'ProductForm',
-  // components: {
-  //   VImageInput
-  // },
+  components: {
+    VImageInput,
+    Editor
+  },
   props: {
     edit: {
       type: Object,
@@ -154,7 +154,7 @@ export default {
   },
   mounted() {
     if (this.edit && this.edit.id) {
-      // this.user = this.edit
+      this.product = this.edit
     }
   },
   data () {
@@ -163,39 +163,24 @@ export default {
       loading: false,
       product: {
         name: '',
-        seo_description: '',
+        slug: '',
+        description: '',
+        image: '',
       },
-      // user: {
-      //   firstname: '',
-      //   lastname: '',
-      //   username: '',
-      //   email: '',
-      //   password: '',
-      //   password_confirmation: '',
-      //   role_id: 2,
-      //   phone: '',
-      //   image: null,
-      // },
       rules: {
-        required: [v => !!v || 'Ce champ est requis'],
-        email: [value => /.+@.+\..+/.test(value) || 'Veuillez entrer une adresse email valide'],
-        password: [value => (value && value.length >= 8) || 'Le mot de passe doit contenir au moins 8 caractères'],
-        password_confirmation: [value => !!value || value === this.user.password || 'Les mots de passe ne correspondent pas']
+        required: v => !!v || 'Ce champ est requis',
       },
+      updateImage: false,
     }
   },
   methods: {
     closeModal () {
       this.loading = true
-      this.user = {
-        firstname: '',
-        lastname: '',
-        username: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
-        role_id: 2,
-        phone: ''
+      this.product = {
+        name: '',
+        slug: '',
+        description: '',
+        image: '',
       }
 
       this.$emit('modal:close')
@@ -208,14 +193,24 @@ export default {
       const action = this.edit ? 'edit' : 'create'
 
       try {
-        await this.$store.dispatch(`users/${action}`, this.user)
+        this.product.slug = this.slug
+        await this.$store.dispatch(`products/${action}`, this.product)
         this.closeModal()
       } catch (e) {
         console.log(e)
       } finally {
         this.loading = false
       }
-    }
+    },
+    toggleUpdateImage () {
+      this.product.image = '';
+      this.updateImage = !this.updateImage;
+    },
   },
+  computed: {
+    slug () {
+      return this.product.name.toLowerCase().replace(/ /g, '-')
+    }
+  }
 }
 </script>

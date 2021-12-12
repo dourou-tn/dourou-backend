@@ -128,7 +128,7 @@
       <v-btn
         color="green darken-1"
         text
-        @click="saveUser"
+        @click="save"
       >
         Save
       </v-btn>
@@ -190,13 +190,14 @@ export default {
         password: '',
         password_confirmation: '',
         role_id: 2,
-        phone: ''
+        phone: '',
+        image: '',
       }
 
       this.$emit('modal:close')
       this.loading = false
     },
-    async saveUser () {
+    async save () {
       this.loading = true
       if (!this.$refs.form.validate()) return
 

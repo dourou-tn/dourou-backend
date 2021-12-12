@@ -3,16 +3,17 @@
     :headers="headers"
     :items="users"
     sort-by="id"
-    class="elevation-0"
+    class="elevation-0 rounded-tl-xl"
     :loading="loading"
   >
     <template v-slot:top>
       <v-toolbar
         flat
+        class="rounded-tl-xl"
       >
         <v-toolbar-title>
           <v-icon class="mb-1">mdi-account-multiple</v-icon>
-          Liste des Utilisateurs
+          Utilisateurs
         </v-toolbar-title>
         <v-divider
           class="mx-4"
@@ -24,6 +25,7 @@
         <v-dialog
           v-model="createUserForm"
           fullscreen
+          persistent
         >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -37,7 +39,9 @@
             </v-btn>
           </template>
 
-          <UsersForm v-if="createUserForm" @modal:close="closeUserForm" :edit="edit" />
+          <UsersForm v-if="createUserForm" @modal:close="closeForm" :edit="edit" />
+          this.loading = true;
+          await this.dispatch('users/fetch')
 
         </v-dialog>
 
@@ -78,9 +82,9 @@
       </v-toolbar>
     </template>
 
-    <template v-slot:item.avatar="{item}">
-      <v-avatar v-if="item.image_url" size="32">
-        <img :src="`http://localhost:5000/${item.image_url}`" />
+    <template v-slot:item.image_path="{item}">
+      <v-avatar v-if="item.image_path" size="32">
+        <img :src="`http://localhost:5000/${item.image_path}`" />
       </v-avatar>
     </template>
 
@@ -133,7 +137,7 @@ export default {
           text: '',
           align: 'shrink',
           sortable: false,
-          value: 'avatar',
+          value: 'image_path',
           width: 32,
         },
         {
@@ -146,12 +150,6 @@ export default {
           align: 'left',
           sortable: true,
           value: 'username'
-        },
-        {
-          text: 'Prénom',
-          align: 'left',
-          sortable: true,
-          value: 'lastname'
         },
         {
           text: 'Email',
@@ -178,7 +176,7 @@ export default {
     }
   },
   async mounted() {
-    await this.$store.dispatch('users/fetchUsers');
+    await this.$store.dispatch('users/fetch');
   },
 
   computed: {
@@ -192,9 +190,12 @@ export default {
       this.edit = user;
       this.createUserForm = true;
     },
-    closeUserForm () {
+    async closeForm () {
+      this.loading = true;
+      await this.$store.dispatch('users/fetch')
       this.edit = null;
       this.createUserForm = false;
+      this.loading = false;
     },
     deleteUser (user) {
       this.userToDelete = user;
