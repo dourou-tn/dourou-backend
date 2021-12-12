@@ -98,6 +98,16 @@
             </v-col>
           </v-row>
 
+          <v-row>
+            <v-col cols="12" sm="12" md="12">
+              <v-image-input
+                v-model="user.image"
+                :image-quality="1"
+                clearable
+                image-format="png"
+              />
+            </v-col>
+          </v-row>
         </v-container>
 
       </v-form>
@@ -125,8 +135,13 @@
 </template>
 
 <script>
+import VImageInput from 'vuetify-image-input/a-la-carte';
+
 export default {
   name: 'UsersForm',
+  components: {
+    VImageInput
+  },
   props: {
     edit: {
       type: Object,
@@ -150,7 +165,8 @@ export default {
         password: '',
         password_confirmation: '',
         role_id: 2,
-        phone: ''
+        phone: '',
+        image: null,
       },
       rules: {
         required: [v => !!v || 'Ce champ est requis'],

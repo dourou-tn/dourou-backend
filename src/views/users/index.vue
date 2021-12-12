@@ -5,6 +5,7 @@
       :items="users"
       sort-by="id"
       class="elevation-0"
+      :loading="loading"
     >
       <template v-slot:top>
         <v-toolbar
@@ -39,6 +40,40 @@
 
             <UsersForm v-if="createUserForm" @modal:close="closeUserForm" :edit="edit" />
 
+          </v-dialog>
+
+          <v-dialog
+            v-if="userToDelete"
+            v-model="userToDelete"
+            persistent
+            max-width="393"
+          >
+            <v-card>
+              <v-card-title class="text-h5">
+                Supprimer?
+              </v-card-title>
+              <v-card-text>
+                <div>{{ userToDelete.lastname }} {{ userToDelete.firstname }}</div>
+                <div>{{ userToDelete.email }}</div>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="red darken-1"
+                  text
+                  @click="userToDelete = null"
+                >
+                  Annuler
+                </v-btn>
+                <v-btn
+                  color="green darken-1"
+                  text
+                  @click="confirmDelete"
+                >
+                  Confirmer
+                </v-btn>
+              </v-card-actions>
+            </v-card>
           </v-dialog>
 
         </v-toolbar>
@@ -125,7 +160,9 @@ export default {
         }
       ],
       createUserForm: false,
-      edit: null
+      edit: null,
+      userToDelete: null,
+      loading: false,
     }
   },
   async mounted() {
@@ -143,12 +180,18 @@ export default {
       this.edit = user;
       this.createUserForm = true;
     },
-    deleteUser (user) {
-      console.log('user delete', user)
-    },
     closeUserForm () {
       this.edit = null;
       this.createUserForm = false;
+    },
+    deleteUser (user) {
+      this.userToDelete = user;
+    },
+    async confirmDelete () {
+      this.loading = true;
+      await this.$store.dispatch('users/deleteUser', this.userToDelete.id);
+      this.userToDelete = null;
+      this.loading = false;
     },
   }
 }

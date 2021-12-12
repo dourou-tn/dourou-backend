@@ -16,6 +16,9 @@ export default {
     ADD_USER(state, user) {
       state.users.push(user)
     },
+    DELETE_USER(state, userId) {
+      state.users = state.users.filter((u) => u.id !== userId)
+    }
   },
 
   actions: {
@@ -38,6 +41,15 @@ export default {
         const res = await window.Axios.put(`/users/${user.id}`, user);
         return res.status;
       }
+    },
+
+    async deleteUser ({ commit }, userId) {
+      const res = await window.Axios.delete(`/users/${userId}`);
+      console.log('del', res);
+      if (res.status === 200) {
+        commit('DELETE_USER', userId)
+      }
+      return res.status;
     }
   }
 }

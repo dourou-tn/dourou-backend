@@ -36,7 +36,7 @@ const routes = [
   {
     path: '/products',
     name: 'ProductsPage',
-    component: () => import(/* webpackChunkName: "products" */ '../views/Products.vue'),
+    component: () => import(/* webpackChunkName: "products" */ '../views/products/index.vue'),
     meta: {
       auth: true,
       layout: 'backend-layout',
@@ -45,7 +45,7 @@ const routes = [
   {
     path: '/auctions',
     name: 'AuctionsPage',
-    component: () => import(/* webpackChunkName: "users" */ '../views/Auctions.vue'),
+    component: () => import(/* webpackChunkName: "users" */ '../views/auctions/index.vue'),
     meta: {
       auth: true,
       layout: 'backend-layout',
