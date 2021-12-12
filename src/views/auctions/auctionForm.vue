@@ -2,8 +2,8 @@
   <v-card :loading="loading">
     <v-toolbar flat dark color="primary">
       <v-toolbar-title>
-        <v-icon class="mb-1">mdi-account-multiple</v-icon>
-        {{ edit ? `${edit.id} - ${edit.firstname} ${edit.lastname}` : 'Nouvel utilisateur' }}
+        <v-icon class="mb-1">mdi-creation</v-icon>
+        Nouvelle Enchère
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
@@ -24,7 +24,7 @@
 
         <v-container>
 
-          <v-row>
+          <!-- <v-row>
             <v-col cols="12" sm="6" md="6">
               <v-text-field
                 v-model="user.lastname"
@@ -110,7 +110,7 @@
                 image-format="png"
               />
             </v-col>
-          </v-row>
+          </v-row> -->
         </v-container>
 
       </v-form>
@@ -128,7 +128,7 @@
       <v-btn
         color="green darken-1"
         text
-        @click="saveUser"
+        @click="save"
       >
         Save
       </v-btn>
@@ -138,13 +138,13 @@
 </template>
 
 <script>
-import VImageInput from 'vuetify-image-input/a-la-carte';
+// import VImageInput from 'vuetify-image-input/a-la-carte';
 
 export default {
-  name: 'UsersForm',
-  components: {
-    VImageInput
-  },
+  name: 'AuctionForm',
+  // components: {
+  //   VImageInput
+  // },
   props: {
     edit: {
       type: Object,
@@ -153,57 +153,58 @@ export default {
   },
   mounted() {
     if (this.edit && this.edit.id) {
-      this.user = this.edit
+      // this.user = this.edit
     }
   },
   data () {
     return {
       valid: false,
       loading: false,
-      user: {
-        firstname: '',
-        lastname: '',
-        username: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
-        role_id: 2,
-        phone: '',
-        image: null,
-      },
-      rules: {
-        required: [v => !!v || 'Ce champ est requis'],
-        email: [value => /.+@.+\..+/.test(value) || 'Veuillez entrer une adresse email valide'],
-        password: [value => (value && value.length >= 8) || 'Le mot de passe doit contenir au moins 8 caractères'],
-        password_confirmation: [value => !!value || value === this.user.password || 'Les mots de passe ne correspondent pas']
-      },
+      auction: {},
+      // user: {
+      //   firstname: '',
+      //   lastname: '',
+      //   username: '',
+      //   email: '',
+      //   password: '',
+      //   password_confirmation: '',
+      //   role_id: 2,
+      //   phone: '',
+      //   image: null,
+      // },
+      // rules: {
+      //   required: [v => !!v || 'Ce champ est requis'],
+      //   email: [value => /.+@.+\..+/.test(value) || 'Veuillez entrer une adresse email valide'],
+      //   password: [value => (value && value.length >= 8) || 'Le mot de passe doit contenir au moins 8 caractères'],
+      //   password_confirmation: [value => !!value || value === this.user.password || 'Les mots de passe ne correspondent pas']
+      // },
     }
   },
   methods: {
     closeModal () {
       this.loading = true
-      this.user = {
-        firstname: '',
-        lastname: '',
-        username: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
-        role_id: 2,
-        phone: ''
-      }
+      // this.user = {
+      //   firstname: '',
+      //   lastname: '',
+      //   username: '',
+      //   email: '',
+      //   password: '',
+      //   password_confirmation: '',
+      //   role_id: 2,
+      //   phone: ''
+      // }
 
       this.$emit('modal:close')
       this.loading = false
     },
-    async saveUser () {
+    async save () {
       this.loading = true
       if (!this.$refs.form.validate()) return
 
       const action = this.edit ? 'edit' : 'create'
 
       try {
-        await this.$store.dispatch(`users/${action}`, this.user)
+        await this.$store.dispatch(`auctions/${action}`, this.auction)
         this.closeModal()
       } catch (e) {
         console.log(e)

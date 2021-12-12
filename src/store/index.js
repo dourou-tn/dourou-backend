@@ -4,6 +4,8 @@ import createPersistedState from 'vuex-persistedstate'
 
 import auth from './auth'
 import users from './users'
+import products from './products'
+import auctions from './auctions'
 
 const persistedStateOptions = {
   paths: [
@@ -16,7 +18,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   modules: {
     auth,
-    users
+    users,
+    products,
+    auctions,
   },
   plugins: [createPersistedState(persistedStateOptions)]
 })

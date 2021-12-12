@@ -24,7 +24,6 @@ export default {
   actions: {
     async fetchUsers({ commit }) {
       const res = await window.Axios.get('/users')
-      console.log('res', res)
         commit('SET_USERS', res.data)
     },
 
