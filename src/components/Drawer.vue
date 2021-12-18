@@ -49,9 +49,9 @@ export default {
     return {
       links: [
         { text: 'Dashboard', to: 'HomePage', icon: 'mdi-home' },
+        { text: 'Utilisateurs', to: 'UsersPage', icon: 'mdi-account-multiple' },
         { text: 'Produits', to: 'ProductsPage', icon: 'mdi-cube-outline' },
         { text: 'Enchères', to: 'AuctionsPage', icon: 'mdi-creation' },
-        { text: 'Utilisateurs', to: 'UsersPage', icon: 'mdi-account-multiple' },
       ]
     }
   },

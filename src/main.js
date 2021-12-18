@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import moment from 'moment'
 import './plugins/axios'
 import App from './App.vue'
 import router from './router'
@@ -13,6 +14,7 @@ Vue.component('backend-layout', BackendLayout)
 Vue.component('default-layout', DefaultLayout)
 
 Vue.config.productionTip = false
+Vue.prototype.$moment = moment
 
 new Vue({
   router,

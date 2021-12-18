@@ -1,6 +1,6 @@
 <template>
   <v-card :loading="loading">
-    <v-toolbar flat dark color="primary">
+    <v-toolbar flat dark>
       <v-toolbar-title>
         <v-icon class="mb-1">mdi-creation</v-icon>
         Nouvelle Enchère
@@ -23,94 +23,74 @@
       >
 
         <v-container>
-
-          <!-- <v-row>
-            <v-col cols="12" sm="6" md="6">
-              <v-text-field
-                v-model="user.lastname"
-                label="Nom"
-                :rules="rules.required"
-              />
+          <v-row class="justify-center">
+            <v-col cols="6" sm="12" md="6">
+              <v-date-picker
+                v-model="auction.start_date"
+                full-width
+                locale="fr"
+                first-day-of-week="1"
+                color="primary"
+                :rules="[rules.required]"
+              ></v-date-picker>
             </v-col>
-            <v-col cols="12" sm="6" md="6">
-              <v-text-field
-                v-model="user.firstname"
-                label="Prénom"
-                :rules="rules.required"
-              />
-            </v-col>
-          </v-row>
-  
-          <v-row>
-            <v-col cols="12" sm="6" md="6">
-              <v-text-field
-                v-model="user.username"
-                label="Username"
-                type="text"
-                :rules="rules.required"
-              />
-            </v-col>
-            <v-col cols="12" sm="6" md="6">
-              
-              <v-text-field
-                v-model="user.email"
-                label="Email"
-                type="email"
-                :rules="rules.email"
-              />
-            </v-col>
-          </v-row>
-  
-          <v-row>
-            <v-col cols="12" sm="6" md="6">
-              <v-text-field
-                v-model="user.password"
-                label="Mot de passe"
-                type="password"
-                :rules="edit ? [] : rules.password"
-              />
-            </v-col>
-            <v-col cols="12" sm="6" md="6">
-              <v-text-field
-                v-model="user.password_confirmation"
-                label="Confirmation du mot de passe"
-                type="password"
-                :rules="edit ? [] : rules.password_confirmation"
-              />
+            <v-col cols="6" sm="12" md="6">
+              <v-time-picker
+                v-model="auction.start_time"
+                format="24hr"
+                full-width
+                color="primary"
+                :rules="[rules.required]"
+              ></v-time-picker>
             </v-col>
           </v-row>
 
-          <v-row>
-            <v-col cols="12" sm="6" md="6">
-              <v-text-field
-                v-model="user.phone"
-                label="Téléphone"
-                :rules="rules.required"
-              />
+
+          <v-row class="justify-center">
+            <v-col cols="9" sm="6" md="6">
+              <v-autocomplete
+                v-model="auction.product"
+                :loading="loading"
+                :items="products"
+                label="Produit de l'enchère"
+                solo-inverted
+                color="primary"
+                return-object
+                :rules="[rules.required]"
+                item-text="name"
+                item-id="id"
+              >
+                <template v-slot:item="{ item }">
+                  <v-avatar v-if="item.image_path" size="32" class="mr-3">
+                    <img :src="`http://localhost:5000/${item.image_path}`" />
+                  </v-avatar>
+                  <span v-text="item.name"></span>
+                </template>
+
+                <template v-slot:selection="{ item }">
+                  <v-avatar v-if="item.image_path" size="32" class="mr-3">
+                    <img :src="`http://localhost:5000/${item.image_path}`" />
+                  </v-avatar>
+                  <span v-text="item.name"></span>
+                </template>
+              </v-autocomplete>
             </v-col>
-            <v-col cols="12" sm="6" md="6">
-              <v-select
-                :items="[
-                  { value: 1, text: 'Administrateur' },
-                  { value: 2, text: 'Utilisateur' }
-                ]"
-                label="Role"
-                v-model="user.role_id"
-                :rules="rules.required"
-              ></v-select>
+            <v-col cols="3">
+              <v-text-field readonly solo-inverted v-model="productPrice"/>
             </v-col>
           </v-row>
 
           <v-row>
-            <v-col cols="12" sm="12" md="12">
-              <v-image-input
-                v-model="user.image"
-                :image-quality="1"
-                clearable
-                image-format="png"
-              />
+            <v-col cols="4">
+              <v-text-field type="number" label="Participation" v-model="auction.subscribe_price" :rules="[rules.required]"/>
             </v-col>
-          </v-row> -->
+            <v-col cols="4">
+              <v-text-field type="number" label="Prix de départ" v-model="auction.start_price" :rules="[rules.required]"/>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field type="number" label="Nbr de participants" v-model="auction.max_size" :rules="[rules.required]"/>
+            </v-col>
+          </v-row>
         </v-container>
 
       </v-form>
@@ -134,73 +114,86 @@
       </v-btn>
     </v-card-actions>
 
+    <pre>
+      {{ edit }}
+    </pre>
   </v-card>
 </template>
 
 <script>
-// import VImageInput from 'vuetify-image-input/a-la-carte';
 
 export default {
   name: 'AuctionForm',
-  // components: {
-  //   VImageInput
-  // },
+
   props: {
     edit: {
       type: Object,
       default: () => {}
     },
   },
-  mounted() {
+  async mounted() {
+    this.loading = true
+    await this.$store.dispatch('products/fetch');
     if (this.edit && this.edit.id) {
-      // this.user = this.edit
+      this.auction = this.edit
     }
+    this.loading = false
   },
   data () {
     return {
       valid: false,
       loading: false,
-      auction: {},
-      // user: {
-      //   firstname: '',
-      //   lastname: '',
-      //   username: '',
-      //   email: '',
-      //   password: '',
-      //   password_confirmation: '',
-      //   role_id: 2,
-      //   phone: '',
-      //   image: null,
-      // },
-      // rules: {
-      //   required: [v => !!v || 'Ce champ est requis'],
-      //   email: [value => /.+@.+\..+/.test(value) || 'Veuillez entrer une adresse email valide'],
-      //   password: [value => (value && value.length >= 8) || 'Le mot de passe doit contenir au moins 8 caractères'],
-      //   password_confirmation: [value => !!value || value === this.user.password || 'Les mots de passe ne correspondent pas']
-      // },
+      auction: {
+        start_date: '',
+        start_time: '',
+        product: {},
+        subscribe_price: '',
+        start_price: '',
+        max_size: '',
+      },
+      rules: {
+        required: v => !!v || 'Ce champ est requis',
+      },
+    }
+  },
+  computed: {
+    products() {
+      return this.$store.getters['products/products']
+    },
+    productPrice () {
+      if (this.auction.product) {
+        console.log(this.auction.product)
+        return this.auction.product.price
+      }
+      return 0;
     }
   },
   methods: {
     closeModal () {
       this.loading = true
-      // this.user = {
-      //   firstname: '',
-      //   lastname: '',
-      //   username: '',
-      //   email: '',
-      //   password: '',
-      //   password_confirmation: '',
-      //   role_id: 2,
-      //   phone: ''
-      // }
+      this.auction =  {
+        start_date: '',
+        product: null,
+        subscribe_price: '',
+        start_price: '',
+        max_size: '',
+      }
+
+      this.edit =  {
+        start_date: '',
+        product: null,
+        subscribe_price: '',
+        start_price: '',
+        max_size: '',
+      }
 
       this.$emit('modal:close')
       this.loading = false
     },
     async save () {
-      this.loading = true
       if (!this.$refs.form.validate()) return
 
+      this.loading = true
       const action = this.edit ? 'edit' : 'create'
 
       try {

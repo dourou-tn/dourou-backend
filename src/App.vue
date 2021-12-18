@@ -16,3 +16,13 @@ export default {
   }
 };
 </script>
+
+<style>
+  .v-list-item__title {
+    color: white;
+  }
+
+  .v-picker--date {
+    height: 100%;
+  }
+</style>

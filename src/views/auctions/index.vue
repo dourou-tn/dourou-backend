@@ -25,6 +25,7 @@
         <v-dialog
           v-model="createForm"
           fullscreen
+          persistent
         >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -53,7 +54,7 @@
               Supprimer?
             </v-card-title>
             <v-card-text>
-              <div>{{ auctionToDelete.name }}</div>
+              <div>{{ auctionToDelete.id }}</div>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -78,37 +79,30 @@
       </v-toolbar>
     </template>
 
-    <!-- <template v-slot:item.avatar="{item}">
-      <v-avatar v-if="item.image_url" size="32">
-        <img :src="`http://localhost:5000/${item.image_url}`" />
-      </v-avatar>
-    </template> -->
-
-    <!-- <template v-slot:item.name="{item}">
-      <span>{{ item.lastname }} {{ item.firstname }}</span>
+    <template v-slot:item.product="{item}">
+      <span>{{ item.product.name }}</span>
     </template>
 
-    <template v-slot:item.role_id="{item}">
-      <v-chip small :color="item.role_id === 1 ? 'primary' : 'secondary' ">
-        {{ item.role_id === 1 ? 'Admin' : 'User' }}
-      </v-chip>
-    </template> -->
+     <template v-slot:item.start_date="{item}">
+      <span>{{ $moment(item.start_date).format('DD/MM/YYYY HH:mm:ss') }}</span>
+    </template>
 
-    <!-- <template v-slot:item.actions="{ item }">
+    <template v-slot:item.actions="{ item }">
       <v-icon
         small
         class="mr-2"
-        @click="editUser(item)"
+        @click="editItem(item)"
       >
         mdi-pencil
       </v-icon>
       <v-icon
         small
-        @click="deleteUser(item)"
+        @click="deleteItem(item)"
       >
         mdi-delete
       </v-icon>
-    </template> -->
+    </template>
+
 
   </v-data-table>
 </template>
@@ -130,16 +124,39 @@ export default {
           width: 32,
         },
         {
-          text: 'Nom',
+          text: 'Date',
           align: 'left',
           sortable: true,
-          value: 'name',
+          value: 'start_date',
         },
         {
-          text: 'Image',
+          text: 'Produit',
           align: 'left',
           sortable: true,
-          value: 'img'
+          value: 'product',
+        },
+        {
+          text: 'Inscription',
+          align: 'left',
+          sortable: true,
+          value: 'subscribe_price'
+        },
+        {
+          text: 'Départ',
+          align: 'left',
+          sortable: true,
+          value: 'start_price'
+        },
+        {
+          text: 'Taille',
+          align: 'left',
+          sortable: true,
+          value: 'max_size'
+        },
+        {
+          text: 'Actions',
+          value: 'actions',
+          sortable: false
         },
       ],
       createForm: false,
@@ -159,17 +176,17 @@ export default {
   },
 
   methods: {
-    // editUser (user) {
-    //   this.edit = user;
-    //   this.createUserForm = true;
-    // },
+    editItem (auction) {
+      this.edit = auction;
+      this.createForm = true;
+    },
     closeForm () {
       this.edit = null;
       this.createForm = false;
     },
-    // deleteUser (user) {
-    //   this.userToDelete = user;
-    // },
+    deleteItem (auction) {
+      this.auctionToDelete = auction;
+    },
     async confirmDelete () {
       this.loading = true;
       await this.$store.dispatch('auctions/delete', this.auctionToDelete.id);

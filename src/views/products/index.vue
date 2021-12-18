@@ -89,16 +89,6 @@
       </v-avatar>
     </template>
 
-    <!-- <template v-slot:item.name="{item}">
-      <span>{{ item.lastname }} {{ item.firstname }}</span>
-    </template>
-
-    <template v-slot:item.role_id="{item}">
-      <v-chip small :color="item.role_id === 1 ? 'primary' : 'secondary' ">
-        {{ item.role_id === 1 ? 'Admin' : 'User' }}
-      </v-chip>
-    </template> -->
-
     <template v-slot:item.actions="{ item }">
       <v-icon
         small
