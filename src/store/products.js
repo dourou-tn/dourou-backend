@@ -23,7 +23,7 @@ export default {
 
   actions: {
     async fetch({ commit }) {
-      const res = await window.Axios.get('/products')
+      const res = await window.Axios.get('products')
       commit('SET_PRODUCTS', res.data)
     },
 

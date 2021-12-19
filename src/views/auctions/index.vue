@@ -84,7 +84,7 @@
     </template>
 
      <template v-slot:item.start_date="{item}">
-      <span>{{ $moment(item.start_date).format('DD/MM/YYYY HH:mm:ss') }}</span>
+      <span>{{ $moment(item.start_date).format('DD/MM/YYYY') }} {{item.start_time}}</span>
     </template>
 
     <template v-slot:item.actions="{ item }">
@@ -124,7 +124,7 @@ export default {
           width: 32,
         },
         {
-          text: 'Date',
+          text: 'Date de début',
           align: 'left',
           sortable: true,
           value: 'start_date',
@@ -136,13 +136,13 @@ export default {
           value: 'product',
         },
         {
-          text: 'Inscription',
+          text: 'Prix de participation',
           align: 'left',
           sortable: true,
           value: 'subscribe_price'
         },
         {
-          text: 'Départ',
+          text: 'Prix de départ',
           align: 'left',
           sortable: true,
           value: 'start_price'
@@ -180,7 +180,8 @@ export default {
       this.edit = auction;
       this.createForm = true;
     },
-    closeForm () {
+    async closeForm () {
+      await this.$store.dispatch('auctions/fetch');
       this.edit = null;
       this.createForm = false;
     },

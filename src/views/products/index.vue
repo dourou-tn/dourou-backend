@@ -177,6 +177,7 @@ export default {
       await this.$store.dispatch('products/delete', this.productToDelete.id);
       this.userToDelete = null;
       this.loading = false;
+      this.productToDelete = null;
     },
   }
 }

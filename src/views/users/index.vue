@@ -40,8 +40,6 @@
           </template>
 
           <UsersForm v-if="createUserForm" @modal:close="closeForm" :edit="edit" />
-          this.loading = true;
-          await this.dispatch('users/fetch')
 
         </v-dialog>
 
@@ -107,8 +105,9 @@
         mdi-pencil
       </v-icon>
       <v-icon
-        small
+        v-if="item.role_id !== 1"
         @click="deleteUser(item)"
+        small
       >
         mdi-delete
       </v-icon>

@@ -30,7 +30,6 @@
       onEditorChange({ quill, html, text }) { // eslint-disable-line
         this.content = html
         this.$emit('input', this.content);
-        console.log('editor change!', this.content)
       }
     },
   }

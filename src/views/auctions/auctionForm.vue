@@ -82,10 +82,10 @@
 
           <v-row>
             <v-col cols="4">
-              <v-text-field type="number" label="Participation" v-model="auction.subscribe_price" :rules="[rules.required]"/>
+              <v-text-field type="number" label="Prix de participation" v-model="auction.subscribe_price" :rules="[rules.required]" suffix="TND"/>
             </v-col>
             <v-col cols="4">
-              <v-text-field type="number" label="Prix de départ" v-model="auction.start_price" :rules="[rules.required]"/>
+              <v-text-field type="number" label="Prix de départ" v-model="auction.start_price" :rules="[rules.required]" suffix="TND" />
             </v-col>
             <v-col cols="4">
               <v-text-field type="number" label="Nbr de participants" v-model="auction.max_size" :rules="[rules.required]"/>
@@ -114,9 +114,6 @@
       </v-btn>
     </v-card-actions>
 
-    <pre>
-      {{ edit }}
-    </pre>
   </v-card>
 </template>
 
@@ -179,13 +176,7 @@ export default {
         max_size: '',
       }
 
-      this.edit =  {
-        start_date: '',
-        product: null,
-        subscribe_price: '',
-        start_price: '',
-        max_size: '',
-      }
+      this.edit = null;
 
       this.$emit('modal:close')
       this.loading = false
@@ -197,7 +188,7 @@ export default {
       const action = this.edit ? 'edit' : 'create'
 
       try {
-        await this.$store.dispatch(`auctions/${action}`, this.auction)
+        await this.$store.dispatch(`auctions/${action}`, { ...this.auction, product_id: this.auction.product.id })
         this.closeModal()
       } catch (e) {
         console.log(e)
