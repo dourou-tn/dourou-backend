@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <Snackbar />
     <v-app-bar app dark>
       <v-spacer></v-spacer>
       <v-toolbar-title>DOUROU</v-toolbar-title>
@@ -27,9 +28,13 @@
 </template>
 
 <script>
+import Snackbar from '../components/Snackbar.vue';
+
 export default {
-  name: 'DefaultLayout',
-  mounted () {
-  }
+    name: "DefaultLayout",
+    componens: { Snackbar },
+    mounted() {
+    },
+    components: { Snackbar }
 }
 </script>

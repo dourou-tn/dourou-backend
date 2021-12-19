@@ -6,6 +6,7 @@ import auth from './auth'
 import users from './users'
 import products from './products'
 import auctions from './auctions'
+import snackbar from './snackbar'
 
 const persistedStateOptions = {
   paths: [
@@ -21,6 +22,7 @@ export default new Vuex.Store({
     users,
     products,
     auctions,
+    snackbar,
   },
   plugins: [createPersistedState(persistedStateOptions)]
 })

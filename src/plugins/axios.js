@@ -2,11 +2,15 @@
 
 import Vue from 'vue';
 import axios from "axios";
+import store from './../store';
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+
+// get token from store
+
 
 let config = {
   baseURL: 'http://localhost:5000/api',
@@ -23,6 +27,7 @@ const _axios = axios.create(config);
 _axios.interceptors.request.use(
   function(config) {
     // Do something before request is sent
+    config.headers.Authorization = `Bearer ${store.getters['auth/getToken']}`
     return config;
   },
   function(error) {
@@ -38,6 +43,15 @@ _axios.interceptors.response.use(
     return response;
   },
   function(error) {
+    const snackbar = {
+      show: true,
+      msg: `${error.response.status} ${ error.response.data.message }`,
+      color: 'red',
+      type: 'error',
+      timeout: -1
+    }
+
+    store.commit('snackbar/showSnackbar', snackbar)
     // Do something with response error
     return Promise.reject(error);
   }

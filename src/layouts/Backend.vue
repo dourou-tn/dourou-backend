@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <Drawer />
+    <Snackbar />
     <v-app-bar app dark color="primary">
       <v-spacer></v-spacer>
       <v-toolbar-title>DOUROU Backend</v-toolbar-title>
@@ -72,10 +73,11 @@
 
 <script>
 import Drawer from '../components/Drawer.vue'
+import Snackbar from '../components/Snackbar.vue'
 
 export default {
   name: 'BackendLayout',
-  components: { Drawer },
+  components: { Drawer, Snackbar },
   computed: {
     currentUser () {
       return this.$store.getters['auth/getUser'];
