@@ -7,7 +7,7 @@ export default {
       msg: '401 Unauthorized',
       color: 'red',
       type: '',
-      timeout: -1
+      timeout: '8000'
     }
   },
 

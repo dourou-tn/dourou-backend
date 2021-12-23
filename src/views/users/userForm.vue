@@ -207,7 +207,7 @@ export default {
         await this.$store.dispatch(`users/${action}`, this.user)
         this.closeModal()
       } catch (e) {
-        console.log(e)
+        console.error(e)
       } finally {
         this.loading = false
       }

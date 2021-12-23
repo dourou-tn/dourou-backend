@@ -48,7 +48,7 @@ _axios.interceptors.response.use(
       msg: `${error.response.status} ${ error.response.data.message }`,
       color: 'red',
       type: 'error',
-      timeout: -1
+      timeout: '8000'
     }
 
     store.commit('snackbar/showSnackbar', snackbar)

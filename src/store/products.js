@@ -44,7 +44,6 @@ export default {
 
     async delete({ commit }, productId) {
       const res = await window.Axios.delete(`/products/${productId}`);
-      console.log('del', res);
       if (res.status === 200) {
         commit('DELETE_PRODUCT', productId)
       }

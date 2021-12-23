@@ -44,7 +44,6 @@ export default {
 
     async delete({ commit }, auctionId) {
       const res = await window.Axios.delete(`/auctions/${auctionId}`);
-      console.log('del', res);
       if (res.status === 200) {
         commit('DELETE_AUCTION', auctionId)
       }

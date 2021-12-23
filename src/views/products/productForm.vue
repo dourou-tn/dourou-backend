@@ -197,7 +197,7 @@ export default {
         await this.$store.dispatch(`products/${action}`, this.product)
         this.closeModal()
       } catch (e) {
-        console.log(e)
+        console.error(e)
       } finally {
         this.loading = false
       }

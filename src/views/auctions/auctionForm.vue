@@ -159,7 +159,6 @@ export default {
     },
     productPrice () {
       if (this.auction.product) {
-        console.log(this.auction.product)
         return this.auction.product.price
       }
       return 0;
@@ -191,7 +190,7 @@ export default {
         await this.$store.dispatch(`auctions/${action}`, { ...this.auction, product_id: this.auction.product.id })
         this.closeModal()
       } catch (e) {
-        console.log(e)
+        console.error(e)
       } finally {
         this.loading = false
       }

@@ -44,7 +44,6 @@ export default {
 
     async deleteUser ({ commit }, userId) {
       const res = await window.Axios.delete(`/users/${userId}`);
-      console.log('del', res);
       if (res.status === 200) {
         commit('DELETE_USER', userId)
       }
