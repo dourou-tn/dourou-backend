@@ -50,6 +50,15 @@ const routes = [
       auth: true,
       layout: 'backend-layout',
     },
+  },
+  {
+    path: '/config',
+    name: 'ConfigPage',
+    component: () => import(/* webpackChunkName: "users" */ '../views/config/index.vue'),
+    meta: {
+      auth: true,
+      layout: 'backend-layout',
+    },
   }
 ]
 
