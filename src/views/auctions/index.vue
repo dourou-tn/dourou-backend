@@ -84,7 +84,7 @@
     </template>
 
      <template v-slot:item.start_date="{item}">
-      <span>{{ $moment(item.start_date).format('DD/MM/YYYY') }} {{item.start_time}}</span>
+      <span>{{ $moment(item.start_date).format('DD/MM/YYYY HH:mm') }} {{item.start_time}}</span>
     </template>
 
     <template v-slot:item.actions="{ item }">

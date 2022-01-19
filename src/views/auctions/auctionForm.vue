@@ -133,6 +133,9 @@ export default {
     await this.$store.dispatch('products/fetch');
     if (this.edit && this.edit.id) {
       this.auction = this.edit
+      const [start_date, start_time] = this.auction.start_date.split(' ')
+      this.auction.start_date = start_date;
+      this.auction.start_time = start_time;
     }
     this.loading = false
   },
@@ -175,8 +178,6 @@ export default {
         max_size: '',
       }
 
-      this.edit = null;
-
       this.$emit('modal:close')
       this.loading = false
     },
@@ -187,7 +188,7 @@ export default {
       const action = this.edit ? 'edit' : 'create'
 
       try {
-        await this.$store.dispatch(`auctions/${action}`, { ...this.auction, product_id: this.auction.product.id })
+        await this.$store.dispatch(`auctions/${action}`, { ...this.auction, start_date: `${this.auction.start_date} : ${this.auction.start_time}`, product_id: this.auction.product.id })
         this.closeModal()
       } catch (e) {
         console.error(e)
