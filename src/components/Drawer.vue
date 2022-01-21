@@ -52,6 +52,7 @@ export default {
         { text: 'Utilisateurs', to: 'UsersPage', icon: 'mdi-account-multiple' },
         { text: 'Produits', to: 'ProductsPage', icon: 'mdi-cube-outline' },
         { text: 'Enchères', to: 'AuctionsPage', icon: 'mdi-creation' },
+        { text: 'Dourou Packs', to: 'PacksPage', icon: 'mdi-circle-multiple-outline' },
         { text: 'Configuration', to: 'ConfigPage', icon: 'mdi-cog' },
       ]
     }
