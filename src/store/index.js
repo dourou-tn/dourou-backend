@@ -9,6 +9,7 @@ import auctions from './auctions'
 import snackbar from './snackbar'
 import config from './config'
 import packs from './packs'
+import jobs from './jobs';
 
 const persistedStateOptions = {
   paths: [
@@ -27,6 +28,7 @@ export default new Vuex.Store({
     snackbar,
     config,
     packs,
+    jobs,
   },
   plugins: [createPersistedState(persistedStateOptions)]
 })

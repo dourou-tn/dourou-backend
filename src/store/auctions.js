@@ -2,7 +2,7 @@ export default {
   namespaced: true,
 
   state: {
-    auctions: [],
+    auctions: []
   },
 
   getters: {
@@ -25,6 +25,11 @@ export default {
     async fetch({ commit }) {
       const res = await window.Axios.get('/auctions')
       commit('SET_AUCTIONS', res.data)
+    },
+
+    async show (_, auctionId) {
+      const res = await window.Axios.get(`/auctions/${auctionId}`);
+      return res.data;
     },
 
     async create({ commit }, auction) {

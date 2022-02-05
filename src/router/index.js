@@ -68,6 +68,15 @@ const routes = [
       auth: true,
       layout: 'backend-layout',
     },
+  },
+  {
+    path: '/jobs',
+    name: 'JobsPage',
+    component: () => import(/* webpackChunkName: "users" */ '../views/jobs/index.vue'),
+    meta: {
+      auth: true,
+      layout: 'backend-layout',
+    },
   }
 ]
 

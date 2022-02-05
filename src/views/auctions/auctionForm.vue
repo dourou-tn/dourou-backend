@@ -91,6 +91,16 @@
               <v-text-field type="number" label="Nbr de participants" v-model="auction.max_size" :rules="[rules.required]"/>
             </v-col>
           </v-row>
+
+          <v-row>
+            <v-col cols="12" sm="12" md="6">
+              <v-text-field
+                label="durée (minutes)"
+                v-model="auction.duration"
+              >
+              </v-text-field>
+            </v-col>
+          </v-row>
         </v-container>
 
       </v-form>
@@ -150,6 +160,7 @@ export default {
         subscribe_price: '',
         start_price: '',
         max_size: '',
+        duration: 10,
       },
       rules: {
         required: v => !!v || 'Ce champ est requis',
@@ -176,6 +187,7 @@ export default {
         subscribe_price: '',
         start_price: '',
         max_size: '',
+        duration: '',
       }
 
       this.$emit('modal:close')
