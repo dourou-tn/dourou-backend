@@ -20,6 +20,16 @@
           inset
           vertical
         ></v-divider>
+        <v-btn
+          v-for="(m, i) in menu"
+          :key="i"
+          @click="selectMenu(m.value)"
+          link
+          text
+          :class="m.selected ? 'white--text font-weight-black' : 'grey--text text--darken-1'"
+        >
+          {{ m.label }}
+        </v-btn>
         <v-spacer></v-spacer>
 
         <v-dialog
@@ -163,10 +173,18 @@ export default {
       edit: null,
       auctionToDelete: null,
       loading: false,
+      menu: [
+        { value: 0, selected: true, label: 'Toutes', dispatchEvent: 'fetch' },
+        { value: 1, selected: false, label: 'A venir', dispatchEvent: 'upcoming' },
+        { value: 2, selected: false, label: 'Terminée', dispatchEvent: 'completed'},
+        { value: 3, selected: false, label: 'Live', dispatchEvent: 'live' },
+      ],
+      selectedMenu: 1,
     }
   },
   async mounted() {
-    await this.$store.dispatch('auctions/fetch');
+    // default menu start 0 => toutes
+    await this.selectMenu(this.selectedMenu);
   },
 
   computed: {
@@ -181,7 +199,7 @@ export default {
       this.createForm = true;
     },
     async closeForm () {
-      await this.$store.dispatch('auctions/fetch');
+      await this.$store.dispatch(`auctions/${this.menu[this.selectedMenu].dispatchEvent}`);
       this.edit = null;
       this.createForm = false;
     },
@@ -194,6 +212,31 @@ export default {
       this.auctionToDelete = null;
       this.loading = false;
     },
+    async selectMenu (value) {
+      this.loading = true;
+      try {
+        switch (value) {
+          case 0:
+            await this.$store.dispatch('auctions/fetch');
+            break;
+          case 1:
+            await this.$store.dispatch('auctions/upcoming');
+            break;
+          case 2:
+            await this.$store.dispatch('auctions/completed');
+            break;
+          case 3:
+            await this.$store.dispatch('auctions/live');
+            break;
+        }
+        this.menu.map(m => m.selected = false);
+        this.menu.find(m => m.value === value).selected = true;
+        this.selectedMenu = value;
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+      }
+    }
   }
 }
 </script>

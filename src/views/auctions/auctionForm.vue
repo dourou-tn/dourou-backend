@@ -15,16 +15,15 @@
       </v-btn>
     </v-toolbar>
 
-    <v-card-text>
-      <v-form
-        ref="form"
-        v-model="valid"
-        lazy-validation
-      >
-
+    <v-form
+      ref="form"
+      v-model="valid"
+      lazy-validation
+    >
+      <v-card-text>
         <v-container>
           <v-row class="justify-center">
-            <v-col cols="6" sm="12" md="6">
+            <v-col cols="6" xs="12" sm="6">
               <v-date-picker
                 v-model="auction.start_date"
                 full-width
@@ -34,7 +33,7 @@
                 :rules="[rules.required]"
               ></v-date-picker>
             </v-col>
-            <v-col cols="6" sm="12" md="6">
+            <v-col cols="6" xs="12" sm="6">
               <v-time-picker
                 v-model="auction.start_time"
                 format="24hr"
@@ -46,7 +45,7 @@
           </v-row>
 
 
-          <v-row class="justify-center">
+          <v-row class="">
             <v-col cols="9" sm="6" md="6">
               <v-autocomplete
                 v-model="auction.product"
@@ -81,49 +80,49 @@
           </v-row>
 
           <v-row>
-            <v-col cols="4">
-              <v-text-field type="number" label="Prix de participation" v-model="auction.subscribe_price" :rules="[rules.required]" suffix="TND"/>
+            <v-col cols="6">
+              <v-text-field solo-inverted type="number" label="Prix de participation" v-model="auction.subscribe_price" :rules="[rules.required]" suffix="Prix participation" hint="Prix participation"/>
             </v-col>
-            <v-col cols="4">
-              <v-text-field type="number" label="Prix de départ" v-model="auction.start_price" :rules="[rules.required]" suffix="TND" />
+            <v-col cols="6">
+              <v-text-field solo-inverted type="number" label="Prix de départ" v-model="auction.start_price" :rules="[rules.required]" suffix="Prix départ" hint="Prix départ" />
             </v-col>
-            <v-col cols="4">
-              <v-text-field type="number" label="Nbr de participants" v-model="auction.max_size" :rules="[rules.required]"/>
+            <v-col cols="6">
+              <v-text-field solo-inverted type="number" label="Nbr de participants" v-model="auction.max_size" suffix="participants" :rules="[rules.required]" hint="Nombre de participants"/>
             </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col cols="12" sm="12" md="6">
+            <v-col cols="6">
               <v-text-field
+                solo-inverted
                 label="durée (minutes)"
+                suffix="durée (minutes)"
                 v-model="auction.duration"
               >
               </v-text-field>
             </v-col>
           </v-row>
+
+          <v-row>
+          </v-row>
         </v-container>
+      </v-card-text>
 
-      </v-form>
-    </v-card-text>
-
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn
-        color="red darken-1"
-        text
-        @click="closeModal"
-      >
-        Cancel
-      </v-btn>
-      <v-btn
-        color="green darken-1"
-        text
-        @click="save"
-      >
-        Save
-      </v-btn>
-    </v-card-actions>
-
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn
+          color="red darken-1"
+          text
+          @click="closeModal"
+        >
+          Cancel
+        </v-btn>
+        <v-btn
+          color="green darken-1"
+          text
+          @click="save"
+        >
+          Save
+        </v-btn>
+      </v-card-actions>
+    </v-form>
   </v-card>
 </template>
 
@@ -146,6 +145,7 @@ export default {
       const [start_date, start_time] = this.auction.start_date.split(' ')
       this.auction.start_date = start_date;
       this.auction.start_time = start_time;
+      console.log('this.auction', this.auction)
     }
     this.loading = false
   },

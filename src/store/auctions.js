@@ -53,6 +53,22 @@ export default {
         commit('DELETE_AUCTION', auctionId)
       }
       return res.status;
-    }
+    },
+
+    async upcoming({ commit }) {
+      const data = (await window.Axios.get('client/auctions/upcoming')).data;
+      commit('SET_AUCTIONS', data);
+    },
+
+    async live({ commit }) {
+      const data = (await window.Axios.get('client/auctions/live')).data;
+      commit('SET_AUCTIONS', data);
+    },
+
+    async completed({ commit }) {
+      const data = (await window.Axios.get('client/auctions/completed')).data;
+      commit('SET_AUCTIONS', data);
+    },
+
   }
 }
