@@ -200,7 +200,7 @@ export default {
       const action = this.edit ? 'edit' : 'create'
 
       try {
-        await this.$store.dispatch(`auctions/${action}`, { ...this.auction, start_date: `${this.auction.start_date} : ${this.auction.start_time}`, product_id: this.auction.product.id })
+        await this.$store.dispatch(`auctions/${action}`, { ...this.auction, start_date: `${this.auction.start_date} ${this.auction.start_time}`, product_id: this.auction.product.id })
         this.closeModal()
       } catch (e) {
         console.error(e)
